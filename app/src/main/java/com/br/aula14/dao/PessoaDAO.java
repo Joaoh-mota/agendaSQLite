@@ -64,5 +64,13 @@ public class PessoaDAO extends SQLiteOpenHelper {
         return pessoas;
     }
 
+    public void deletar(String nome) {
+
+        SQLiteDatabase db = getWritableDatabase();
+        String sql = "DELETE FROM pessoa WHERE nome = " + "'" + nome + "'";
+        db.execSQL(sql);
+
+    }
+
 
 }
