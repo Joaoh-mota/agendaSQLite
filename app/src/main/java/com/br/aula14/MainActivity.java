@@ -2,19 +2,16 @@ package com.br.aula14;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import com.br.aula14.dao.PessoaDAO;
 import com.br.aula14.entity.Pessoa;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -22,7 +19,6 @@ public class MainActivity extends AppCompatActivity {
     EditText editTextTelefone;
     EditText editTextEmail;
     Button btnSalvar;
-    ListView listView;
 
     @Override
 
@@ -34,9 +30,6 @@ public class MainActivity extends AppCompatActivity {
         editTextTelefone = findViewById(R.id.editTextTelefone);
         editTextEmail = findViewById(R.id.editTextEmail);
         btnSalvar = findViewById(R.id.btnSalvar);
-        listView = findViewById(R.id.listView);
-
-        buscaNoBanco();
 
         btnSalvar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,8 +49,6 @@ public class MainActivity extends AppCompatActivity {
 
                     limpaFormulario();
 
-                    buscaNoBanco();
-
                 } else {
 
                     Toast.makeText(getApplicationContext(), "Preencha todos os campos!", Toast.LENGTH_SHORT).show();
@@ -67,20 +58,20 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        exibirDados();
 
     }
 
-    private void buscaNoBanco() {
-        PessoaDAO dao = new PessoaDAO(getApplicationContext());
-        List<Pessoa> pessoas = dao.buscar();
-        List<String> nomes = new ArrayList<String>();
+    private void exibirDados() {
+        FloatingActionButton fab = findViewById(R.id.fabListar);
+        Intent intent = new Intent(this, ListActivity.class);
 
-        for (Pessoa nomeBuscado : pessoas){
-            nomes.add(nomeBuscado.getNome());
-        }
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_list_item_1, nomes);
-        listView.setAdapter(adapter);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(intent);
+            }
+        });
     }
 
     private void limpaFormulario() {
