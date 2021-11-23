@@ -41,21 +41,26 @@ public class ListActivity extends AppCompatActivity {
 
         List<String> nomes = new ArrayList<>();
         List<String> telefones = new ArrayList<>();
+        List<String> emails = new ArrayList<>();
 
         String[] dados_nomes = new String[]{};
         String[] dados_telefones = new String[]{};
+        String[] dados_emails = new String[]{};
+
 
         for (Pessoa pessoaBuscada : pessoas){
             nomes.add(pessoaBuscada.getNome());
             telefones.add(pessoaBuscada.getTelefone());
+            emails.add(pessoaBuscada.getEmail());
         }
 
         dados_nomes = nomes.toArray(new String[0]);
         dados_telefones = telefones.toArray(new String[0]);
+        dados_emails = emails.toArray(new String[0]);
 
         recyclerViewLayoutManager = new LinearLayoutManager(context);
         recyclerView.setLayoutManager(recyclerViewLayoutManager);
-        recyclerViewAdapter = new RecyclerViewAdapter(context,dados_nomes,dados_telefones);
+        recyclerViewAdapter = new RecyclerViewAdapter(context,dados_nomes,dados_telefones, dados_emails);
 
         recyclerView.setAdapter(recyclerViewAdapter);
 
