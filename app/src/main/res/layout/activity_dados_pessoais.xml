@@ -9,14 +9,14 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:orientation="vertical">
@@ -30,6 +30,13 @@
                 android:textSize="16dp"
                 android:textStyle="bold" />
 
+            <EditText
+                android:id="@+id/activity_dados_pessoais_editText_nome_recebido"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textPersonName" />
+
             <TextView
                 android:id="@+id/activity_dados_pessoais_text_telefone"
                 android:layout_width="match_parent"
@@ -38,6 +45,13 @@
                 android:text="Telefone:"
                 android:textSize="16dp"
                 android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/activity_dados_pessoais_editText_telefone_recebido"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="number" />
 
             <TextView
                 android:id="@+id/activity_dados_pessoais_text_email"
@@ -48,34 +62,47 @@
                 android:textSize="16dp"
                 android:textStyle="bold" />
 
+            <EditText
+                android:id="@+id/activity_dados_pessoais_editText_email_recebido"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textEmailAddress" />
+
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
             android:layout_margin="10dp"
-            android:orientation="vertical">
+            >
 
-            <TextView
-                android:id="@+id/activity_dados_pessoais_text_nome_recebido"
-                android:layout_width="match_parent"
+            <Button
+                android:id="@+id/activity_dados_pessoais_btn_atualizar"
+                android:layout_width="90dp"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="3dp"
-                android:textSize="16dp" />
+                android:layout_weight="1"
+                android:text="Atualizar"
+                android:layout_marginHorizontal="5dp"
+                />
 
-            <TextView
-                android:id="@+id/activity_dados_pessoais_text_telefone_recebido"
-                android:layout_width="match_parent"
+            <Button
+                android:id="@+id/activity_dados_pessoais_btn_deletar"
+                android:layout_width="90dp"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="3dp"
-                android:textSize="16dp" />
+                android:layout_weight="1"
+                android:text="Deletar"
+                />
 
-            <TextView
-                android:id="@+id/activity_dados_pessoais_text_email_recebido"
-                android:layout_width="match_parent"
+            <Button
+                android:id="@+id/activity_dados_pessoais_btn_voltar"
+                android:layout_width="90dp"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="3dp"
-                android:textSize="16dp" />
+                android:layout_weight="1"
+                android:text="Voltar"
+                android:layout_marginHorizontal="5dp"
+                />
         </LinearLayout>
     </LinearLayout>
 

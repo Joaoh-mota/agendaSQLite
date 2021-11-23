@@ -93,15 +93,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
                 v.getContext().startActivity(intent);
 
-                /*
-                PessoaDAO dao = new PessoaDAO(context);
-                dao.deletar(nomes.get(position));
-
-
-                nomes.remove(position);
-                notifyItemRemoved(position);
-                notifyItemRangeChanged(position, nomes.size());
-                */
             }
         });
 

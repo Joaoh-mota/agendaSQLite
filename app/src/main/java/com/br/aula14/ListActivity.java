@@ -5,7 +5,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -13,6 +15,7 @@ import android.widget.ListView;
 import com.br.aula14.adapter.RecyclerViewAdapter;
 import com.br.aula14.dao.PessoaDAO;
 import com.br.aula14.entity.Pessoa;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +35,7 @@ public class ListActivity extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.recyclerView);
         buscaNoBanco();
+        voltaActivity();
 
     }
 
@@ -65,5 +69,23 @@ public class ListActivity extends AppCompatActivity {
         recyclerView.setAdapter(recyclerViewAdapter);
 
 
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        buscaNoBanco();
+    }
+
+    private void voltaActivity() {
+        FloatingActionButton fab = findViewById(R.id.fabVoltar);
+        Intent intent = new Intent(this, ListActivity.class);
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
     }
 }

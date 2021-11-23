@@ -39,14 +39,23 @@
         android:layout_margin="10dp"
         android:text="Salvar" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fabListar"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="right|bottom"
-        android:layout_marginTop="250dp"
-        android:layout_marginRight="10dp"
-        android:clickable="true"
-        android:src="@android:drawable/ic_menu_search" />
+        android:layout_height="match_parent"
+        >
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fabListar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|bottom"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_margin="20dp"
+            android:clickable="true"
+            android:src="@android:drawable/ic_menu_search" />
+
+    </RelativeLayout>
+
 
 </LinearLayout>
