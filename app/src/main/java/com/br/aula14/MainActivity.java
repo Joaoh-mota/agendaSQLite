@@ -2,9 +2,13 @@ package com.br.aula14;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -31,23 +35,55 @@ public class MainActivity extends AppCompatActivity {
         editTextEmail = findViewById(R.id.editTextEmail);
         btnSalvar = findViewById(R.id.btnSalvar);
 
+
+        //Mascarando telefone
+        final String[] ultimoCaractereDigitado = {""};
+
+        editTextTelefone.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                Integer tamanhoEditTelefone = editTextTelefone.getText().toString().length();
+                if (tamanhoEditTelefone > 1) {
+                    ultimoCaractereDigitado[0] = editTextTelefone.getText().toString().substring(tamanhoEditTelefone - 1);
+                }
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                Integer tamanhoEditTelefone = editTextTelefone.getText().toString().length();
+                if (tamanhoEditTelefone == 2) {
+                    if (!ultimoCaractereDigitado[0].equals(" ")) {
+                        editTextTelefone.append(" ");
+                    } else {
+                        editTextTelefone.getText().delete(tamanhoEditTelefone - 1, tamanhoEditTelefone);
+                    }
+                } else if (tamanhoEditTelefone == 8) {
+                    if (!ultimoCaractereDigitado[0].equals("-")) {
+                        editTextTelefone.append("-");
+                    } else {
+                        editTextTelefone.getText().delete(tamanhoEditTelefone - 1, tamanhoEditTelefone);
+                    }
+                }
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        //Adiciona pessoa
         btnSalvar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 if (!(editTextNome.getText().toString().equals("") || editTextTelefone.getText().toString().equals("") || editTextEmail.getText().toString().equals(""))) {
 
-                    PessoaDAO dao = new PessoaDAO(getApplicationContext());
-                    Pessoa pessoa = new Pessoa();
-
-                    pessoa.setNome(editTextNome.getText().toString());
-                    pessoa.setTelefone(editTextTelefone.getText().toString());
-                    pessoa.setEmail(editTextEmail.getText().toString());
-
-                    dao.cadastrar(pessoa);
-                    dao.close();
-
+                    inserePessoa();
                     limpaFormulario();
+
+                    Toast.makeText(getApplicationContext(), "Pessoa cadastrada com sucesso!", Toast.LENGTH_SHORT).show();
 
                 } else {
 
@@ -60,6 +96,18 @@ public class MainActivity extends AppCompatActivity {
 
         exibirDados();
 
+    }
+
+    private void inserePessoa() {
+        PessoaDAO dao = new PessoaDAO(getApplicationContext());
+        Pessoa pessoa = new Pessoa();
+
+        pessoa.setNome(editTextNome.getText().toString());
+        pessoa.setTelefone(editTextTelefone.getText().toString());
+        pessoa.setEmail(editTextEmail.getText().toString());
+
+        dao.cadastrar(pessoa, null);
+        dao.close();
     }
 
     private void exibirDados() {
@@ -79,5 +127,10 @@ public class MainActivity extends AppCompatActivity {
         editTextNome.requestFocus();
         editTextTelefone.setText("");
         editTextEmail.setText("");
+        View view = this.getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
     }
 }

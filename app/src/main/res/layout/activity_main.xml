@@ -7,6 +7,16 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Cadastre uma nova pessoa"
+        android:textStyle="bold"
+        android:textSize="18dp"
+        android:layout_margin="10dp"
+        android:gravity="center"
+        />
+
     <EditText
         android:id="@+id/editTextNome"
         android:layout_width="match_parent"
@@ -21,7 +31,9 @@
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:hint="Telefone"
-        android:inputType="number" />
+        android:inputType="number|phone"
+        android:maxLength="13"
+        android:phoneNumber="false" />
 
     <EditText
         android:id="@+id/editTextEmail"

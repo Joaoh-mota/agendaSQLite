@@ -3,6 +3,7 @@ package com.br.aula14.dao;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -14,13 +15,13 @@ import java.util.List;
 public class PessoaDAO extends SQLiteOpenHelper {
 
     public PessoaDAO(Context context) {
-        super(context, "bancoAgenda", null, 1);
+        super(context, "bancoAgenda", null, 3);
     }
 
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String sql = "CREATE TABLE pessoa(nome TEXT,telefone TEXT,email TEXT);";
+        String sql = "CREATE TABLE pessoa(nome TEXT UNIQUE,telefone TEXT,email TEXT);";
         db.execSQL(sql);
     }
 
@@ -31,16 +32,31 @@ public class PessoaDAO extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public void cadastrar(Pessoa pessoa) {
+    //Cadastro ou atualização de dados
+    public void cadastrar(Pessoa pessoa, String pessoaParaAtualizar) {
 
         SQLiteDatabase db = getWritableDatabase();
         ContentValues dados = new ContentValues();
 
-        dados.put("nome", pessoa.getNome());
         dados.put("telefone", pessoa.getTelefone());
         dados.put("email", pessoa.getEmail());
 
-        db.insert("pessoa", null, dados);
+        //Se foi chamado a partir do botão de atualizar, ele irá utilizar o nome estático como chave
+        if (pessoaParaAtualizar != null){
+            dados.put("nome", pessoaParaAtualizar);
+        }else{
+            dados.put("nome", pessoa.getNome());
+        }
+
+
+        //Verificação se é atualização ou inserção
+        try{
+            db.insertOrThrow("pessoa", null, dados);
+        }catch (SQLiteConstraintException e){
+            dados.put("nome", pessoa.getNome());
+            db.update("pessoa", dados,"nome = ?", new String[]{pessoaParaAtualizar});
+        }
+
     }
 
     public List<Pessoa> buscar() {

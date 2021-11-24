@@ -6,11 +6,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
 import com.br.aula14.dao.PessoaDAO;
+import com.br.aula14.entity.Pessoa;
 
 public class DadosPessoaisActivity extends AppCompatActivity {
 
@@ -23,6 +26,8 @@ public class DadosPessoaisActivity extends AppCompatActivity {
             activity_dados_pessoais_btn_voltar;
 
     String activity_dados_pessoais_nome_recebido;
+    final String[] ultimoCaractereDigitado = {""};
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,11 +51,50 @@ public class DadosPessoaisActivity extends AppCompatActivity {
         activity_dados_pessoais_nome_recebido = intent.getStringExtra("nome");
 
         activity_dados_pessoais_editText_nome_recebido.setText(intent.getStringExtra("nome"));
+
         activity_dados_pessoais_editText_telefone_recebido.setText(intent.getStringExtra("telefone"));
+
+        //Mascarar telefone
+        activity_dados_pessoais_editText_telefone_recebido.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                Integer tamanhoEditTelefone = activity_dados_pessoais_editText_telefone_recebido.getText().toString().length();
+                if (tamanhoEditTelefone > 1) {
+                    ultimoCaractereDigitado[0] = activity_dados_pessoais_editText_telefone_recebido.getText().toString().substring(tamanhoEditTelefone - 1);
+                }
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                Integer tamanhoEditTelefone = activity_dados_pessoais_editText_telefone_recebido.getText().toString().length();
+                if (tamanhoEditTelefone == 2) {
+                    if (!ultimoCaractereDigitado[0].equals(" ")) {
+                        activity_dados_pessoais_editText_telefone_recebido.append(" ");
+                    } else {
+                        activity_dados_pessoais_editText_telefone_recebido.getText().delete(tamanhoEditTelefone - 1, tamanhoEditTelefone);
+                    }
+                } else if (tamanhoEditTelefone == 8) {
+                    if (!ultimoCaractereDigitado[0].equals("-")) {
+                        activity_dados_pessoais_editText_telefone_recebido.append("-");
+                    } else {
+                        activity_dados_pessoais_editText_telefone_recebido.getText().delete(tamanhoEditTelefone - 1, tamanhoEditTelefone);
+                    }
+                }
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
         activity_dados_pessoais_editText_email_recebido.setText(intent.getStringExtra("email"));
 
         //Funções dos botões
 
+
+        //Voltar
         activity_dados_pessoais_btn_voltar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -58,6 +102,7 @@ public class DadosPessoaisActivity extends AppCompatActivity {
             }
         });
 
+        //Deletar
         activity_dados_pessoais_btn_deletar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -79,12 +124,37 @@ public class DadosPessoaisActivity extends AppCompatActivity {
             }
         });
 
+        //Atualizar
+        activity_dados_pessoais_btn_atualizar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                atualizaPessoa();
+            }
+        });
+
+
+
 
     }
+
+
 
     private void apagaPessoa() {
         PessoaDAO dao = new PessoaDAO(getApplicationContext());
         dao.deletar(activity_dados_pessoais_nome_recebido);
+        finish();
+    }
+
+    private void atualizaPessoa() {
+        PessoaDAO dao = new PessoaDAO(getApplicationContext());
+        Pessoa pessoaParaAtualizar = new Pessoa();
+
+        pessoaParaAtualizar.setNome(activity_dados_pessoais_editText_nome_recebido.getText().toString());
+        pessoaParaAtualizar.setTelefone(activity_dados_pessoais_editText_telefone_recebido.getText().toString());
+        pessoaParaAtualizar.setEmail(activity_dados_pessoais_editText_email_recebido.getText().toString());
+
+        dao.cadastrar(pessoaParaAtualizar, activity_dados_pessoais_nome_recebido);
+        dao.close();
         finish();
     }
 }
